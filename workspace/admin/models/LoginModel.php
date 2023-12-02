@@ -22,7 +22,7 @@ class LoginModel extends Model {
             return false;
         }
 
-       if (password_needs_rehash($member['password'], PASSWORD_DEFAULT)) {
+        if (password_needs_rehash($member['password'], PASSWORD_DEFAULT)) {
             $this->db->set("
                 UPDATE `staff` SET `password` = :password WHERE `email` = :email LIMIT 1
             ", [
