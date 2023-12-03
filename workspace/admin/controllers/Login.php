@@ -24,11 +24,19 @@ class Login extends Controller {
     #[RequestMethod('post')]
     public function check(): void
     {
-        if ($this->proxy->admin->model('LoginModel')->check($this->proxy->post()) != true) {
-            $this->proxy->back(['Invalid login!']);
-        } else {
-            // FIXME: depends of user role(s).
-            header('Location: '.href('admin/staff/list'));
+        $post = $this->proxy->post();
+
+        if (!empty($post['login'])) {
+            if ($this->proxy->admin->model('LoginModel')->check($post) != true) {
+                $this->proxy->back(['Invalid login!'], 'error');
+            } else {
+                // FIXME: depends of user role(s).
+                header('Location: '.href('admin/staff/list'));
+            }
+        }
+
+        if (!empty($post['forgot'])) {
+            
         }
     }
 

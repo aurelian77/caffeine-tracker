@@ -12,19 +12,19 @@
             html, body {
                 height: 100%;
                 width: 100%;
-                background-color: #fafafa;
+                background-color: #f0f0f0;
                 font-family: sans-serif;
                 font-size: 16px;
                 line-height: 20px;
                 color: #222;
             }
             fieldset {
-                width: 460px;
-                height: 180px;
+                width: 420px;
+                height: 190px;
                 border: 1px solid #ccc;
                 position: absolute;
-                top: calc(50% - 90px);
-                left: calc(50% - 230px);
+                top: calc(50% - 95px);
+                left: calc(50% - 210px);
                 background-color: #fff;
                 text-align: center;
                 padding: 5px;
@@ -49,6 +49,11 @@
                 font-size: 16px;
                 line-height: 20px;
             }
+            input[type="submit"]:hover,
+            input[name="login"] {
+                background-color: #4169e1;
+                color: #fff;
+            }
             .error {
                 background-color: #fff0f5;
                 padding: 5px;
@@ -57,14 +62,37 @@
                 text-align: center;
                 color: #b00;
             }
+            legend {
+                color: #4169e1;
+                font-size: 22px;
+            }
+            a {
+                color: #4169e1;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            .text-right {
+                text-align: right;
+            }
+            .float-left {
+                float: left;
+            }
+            .float-right {
+                float: right;
+            }
         </style>
     </head>
     <body>
         <?php
+        d($this->session());
         if (!empty($this->session('custom_errors'))) {
             foreach ($this->session('custom_errors') as $error) { 
             ?>
-                <div class="<?php print $this->session('messages_type'); ?>"><?php print $error; ?></div>
+                <div class="<?php print $this->session('messages_type'); ?>">
+                    <?php print $error; ?>
+                </div>
             <?php 
             } 
         }

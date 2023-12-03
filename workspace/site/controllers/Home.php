@@ -11,6 +11,6 @@ class Home extends Controller
 {
     public function index()
     {
-        dd($this->proxy->server());
+        //
     }
 }

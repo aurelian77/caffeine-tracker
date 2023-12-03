@@ -80,7 +80,7 @@ final class Kernel extends Dispatcher {
     */
     public function csrf()
     {
-        $csrf = str_split(md5((string) time()));
+        $csrf = str_split(md5((string) (time() + rand())));
         shuffle($csrf);
         $_SESSION['csrf'] = implode('', $csrf);
     }

@@ -10,8 +10,11 @@ class LoginModel extends Model {
     public function check(array $data): mixed
     {
         $member = $this->db->getRow("
-            SELECT * FROM `staff`
-            WHERE `staff`.`active` = 1 AND `staff`.`email` = :email AND `invitation_hash` IS NULL", [':email' => $data['email']]
+            SELECT * FROM `cf_users`
+            WHERE `is_banned` IS NULL AND `invitation_hash` IS NULL AND `email` = :email AND `password` = :password", [
+                ':email' => $data['email'],
+                ':password' => hash('sha512', $data['password'])
+            ]
         );
 
         if (empty($member)) {

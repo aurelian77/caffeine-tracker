@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html>
-    <head>
-
-    </head>
     <body>
         <?php 
         if (!empty($this->session('custom_errors'))) {

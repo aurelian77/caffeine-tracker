@@ -86,7 +86,7 @@ CREATE TABLE `cf_log`(
     `log_type` ENUM('comment','status','time') NOT NULL,
     `task_id` BIGINT UNSIGNED NOT NULL COMMENT 'See table cf_tasks',
     `last_update` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'For sorting we use id column',
-    `spent_time` MEDIUMINT DEFAULT NULL COMMENT 'In minutes',
+    `spent_time` MEDIUMINT UNSIGNED DEFAULT NULL COMMENT 'In minutes',
     `content` LONGTEXT DEFAULT NULL COMMENT 'Time spent could not have a reason',
     
     KEY(`task_id`)
