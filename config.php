@@ -14,7 +14,7 @@ Registry::set('config', (object) [
     | On STAGING_MODE all emails sent with email() heper will be redirected to this value.
     | On DEVELOPMENT_MODE arguments of the email() helper will be printed and no email will be sent.
     */
-    'redirectEmailsTo' => 'programator.aurelian@gmail.com',
+    'redirectEmailsTo' => 'admin@example.com',
 
     /*
     | This could be e.g. http://localhost:8080/my-project
