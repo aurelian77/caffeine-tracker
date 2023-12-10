@@ -7,55 +7,38 @@ use nicotine\Model;
 
 class LoginModel extends Model {
 
-    public function check(array $data): mixed
+    public function check(array $data): bool
     {
-        $member = $this->db->getRow("
-            SELECT * FROM `cf_users`
-            WHERE `is_banned` IS NULL AND `invitation_hash` IS NULL AND `email` = :email AND `password` = :password", [
-                ':email' => $data['email'],
-                ':password' => hash('sha512', $data['password'])
-            ]
-        );
+        $query = $this->db->select("*")->from("cf_users")
+            // Aborting "AND `invitation_hash` IS NULL", because someone can request a password reset link.
+            ->where("`is_banned` IS NULL AND `email` = :email AND `password` = :password")
+            ->query();
+
+        $member = $this->db->getRow($query, [
+            ':email' => $data['email'],
+            ':password' => hash('sha512', $data['password'])
+        ]);
 
         if (empty($member)) {
             return false;
         }
 
-        if (!password_verify($data['password'], $member['password'])) {
-            return false;
+        switch ($member['role_id']) {
+            case 1:
+                $role = 'super_admin';
+            break;
+            case 2:
+                $role = 'contributor';
+            break;
+            default:
+                return false;
+            break;
         }
 
-        if (password_needs_rehash($member['password'], PASSWORD_DEFAULT)) {
-            $this->db->set("
-                UPDATE `staff` SET `password` = :password WHERE `email` = :email LIMIT 1
-            ", [
-                ':password' => password_hash($data['password'], PASSWORD_DEFAULT),
-                ':email' => $data['email']
-            ]);
-        }
-
-        $this->db->set("
-            UPDATE `staff` SET `last_login` = NOW() WHERE `email` = :email LIMIT 1
-        ", [
-            ':email' => $data['email']
-        ]);
-
-        $roles = $this->db->getColumn("
-            SELECT `roles`.`name`
-            FROM `staff`
-            INNER JOIN `staff_roles` ON (`staff`.`id` = `staff_roles`.`staff_id`)
-            INNER JOIN `roles` ON (`staff_roles`.`role_id` = `roles`.`id`)
-            WHERE `staff`.`active` = 1 AND `staff`.`email` = :email", [':email' => $data['email']]
-        );
-
-        if (empty($roles)) {
-            return false;
-        }
-
-        $session = ['staff_member' => []];
+        $session = [];
 
         $session['staff_member'] = $member;
-        $session['staff_member']['admin_roles'] = $roles;
+        $session['staff_member']['admin_roles'] = [$role];
 
         $this->proxy->session($session);
 

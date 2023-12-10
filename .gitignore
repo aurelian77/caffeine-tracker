@@ -1,5 +1,3 @@
-/config.php
-
 /workspace/admin/logs/*.log
 
 /workspace/site/logs/*.log

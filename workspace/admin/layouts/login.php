@@ -86,7 +86,6 @@
     </head>
     <body>
         <?php
-        d($this->session());
         if (!empty($this->session('custom_errors'))) {
             foreach ($this->session('custom_errors') as $error) { 
             ?>
@@ -94,7 +93,7 @@
                     <?php print $error; ?>
                 </div>
             <?php 
-            } 
+            }
         }
         print $this->contentForLayout; 
         ?>

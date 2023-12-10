@@ -6,6 +6,7 @@ namespace workspace\admin\controllers;
 use nicotine\Controller;
 use nicotine\RequestMethod;
 use nicotine\AdminRoles;
+use nicotine\Registry;
 
 class Login extends Controller {
 
@@ -25,25 +26,32 @@ class Login extends Controller {
     public function check(): void
     {
         $post = $this->proxy->post();
+        $check = $this->proxy->admin->model('LoginModel')->check($post);
+        $session = $this->proxy->session();
 
         if (!empty($post['login'])) {
-            if ($this->proxy->admin->model('LoginModel')->check($post) != true) {
+            if ($check == false) {
                 $this->proxy->back(['Invalid login!'], 'error');
-            } else {
-                // FIXME: depends of user role(s).
+            }
+
+            if (in_array('super_admin', $session['staff_member']['admin_roles'])) {
                 header('Location: '.href('admin/staff/list'));
+            }
+
+            if (in_array('contributor', $session['staff_member']['admin_roles'])) {
+                header('Location: '.href('admin/projects/list'));
             }
         }
 
         if (!empty($post['forgot'])) {
-            
+            email($post['email'], Registry::get('config')->siteName.' :: Your password reset link', $body /* is already html header, so use it */);
         }
     }
 
     #[RequestMethod('get')]
     public function logout()
     {
-        $this->proxy->session(['staff_member'=> null]);
+        $this->proxy->session(['staff_member'=> []]);
         header("Location: ".href('admin'));
     }
 

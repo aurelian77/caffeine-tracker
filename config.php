@@ -7,26 +7,26 @@ Registry::set('config', (object) [
     /*
     | Site name.
     */
-    'siteName' => 'Nicotine Framework',
+    'siteName' => 'Caffeine Tracker',
 
     /*
     | On PRODUCTION_MODE all emails sent with email() heper will be sent to the real address.
     | On STAGING_MODE all emails sent with email() heper will be redirected to this value.
     | On DEVELOPMENT_MODE arguments of the email() helper will be printed and no email will be sent.
     */
-    'redirectEmailsTo' => 'admin@example.com',
+    'redirectEmailsTo' => 'programator.aurelian@gmail.com',
 
     /*
     | This could be e.g. http://localhost:8080/my-project
     | Please exclude trailing slash from URL definition.
     */
-    'baseHref' => 'http://nicotine-framework.local',
+    'baseHref' => 'http://caffeine-tracker.local',
 
     /*
     | This clould be e.g. "html", or you can set it to an empty string.
     | Please exclude leading dot from the definition.
     */
-    'urlSuffix' => 'html',
+    'urlSuffix' => '',
 
     /*
     | Should be checked on POST requests?
@@ -70,7 +70,7 @@ Registry::set('config', (object) [
     /*
     | Database name.
     */
-    'dbName' => 'nicotine_framework',
+    'dbName' => 'caffeine_tracker',
 
     /*
     | Database charset.

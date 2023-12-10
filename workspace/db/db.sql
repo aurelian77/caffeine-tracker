@@ -116,7 +116,8 @@ CREATE TABLE `cf_tasks_watchers`(
     `user_id` SMALLINT UNSIGNED NOT NULL COMMENT 'See cf_users table',
     
     KEY(`task_id`),
-    KEY(`user_id`)
+    KEY(`user_id`),
+    UNIQUE KEY(`task_id`,`user_id`)
 ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------------
@@ -125,7 +126,7 @@ DROP TABLE IF EXISTS `cf_projects`;
 
 CREATE TABLE `cf_projects`(
     `id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `short_name` VARCHAR(12) NOT NULL UNIQUE,
+    `short_name` VARCHAR(12) NOT NULL UNIQUE COMMENT 'Letters (upp., low.), numbers, and -',
     `title` VARCHAR(250) NOT NULL UNIQUE,
     `description` LONGTEXT DEFAULT NULL COMMENT 'Some projects does not have a description',
     `logo_extension` VARCHAR(4) DEFAULT NULL COMMENT 'Logo is not a requirement'
