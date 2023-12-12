@@ -12,8 +12,8 @@ class LoginModel extends Model {
         $query = $this->db->select("*")->from("cf_users")
             // Aborting "AND `invitation_hash` IS NULL", because someone can request a password reset link.
             ->where("`is_banned` IS NULL AND `email` = :email AND `password` = :password")
-            ->query();
-
+            ->query()
+        ;
         $member = $this->db->getRow($query, [
             ':email' => $data['email'],
             ':password' => hash('sha512', $data['password'])
@@ -43,6 +43,29 @@ class LoginModel extends Model {
         $this->proxy->session($session);
 
         return true;
+    }
+    
+    public function getUserByEmail(string $email): array
+    {
+        $query = $this->db->select("*")->from("cf_users")
+            ->where("`is_banned` IS NULL AND `email` = :email")
+            ->limit("1")
+            ->query()
+        ;
+        return $this->db->getRow($query, [
+            ':email' => $email,
+        ]);
+    }
+
+    public function storeNewUserHash(int $userId, string $newHash): void
+    {
+        $this->db->update([
+            'table' => 'cf_users',
+            'data' => [
+                'invitation_hash' => (string) $newHash,
+            ],
+            'where' => (int) $userId,
+        ]);
     }
 
 }

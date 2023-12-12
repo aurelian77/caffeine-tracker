@@ -26,11 +26,10 @@ class Login extends Controller {
     public function check(): void
     {
         $post = $this->proxy->post();
-        $check = $this->proxy->admin->model('LoginModel')->check($post);
         $session = $this->proxy->session();
 
         if (!empty($post['login'])) {
-            if ($check == false) {
+            if ($this->proxy->admin->model('LoginModel')->check($post) == false) {
                 $this->proxy->back(['Invalid login!'], 'error');
             }
 
@@ -44,7 +43,24 @@ class Login extends Controller {
         }
 
         if (!empty($post['forgot'])) {
-            email($post['email'], Registry::get('config')->siteName.' :: Your password reset link', $body /* is already html header, so use it */);
+            $user = $this->proxy->admin->model('LoginModel')->getUserByEmail($post['email']);
+
+            if (!empty($user)) {
+                $hash = str_split(hash('sha512', (string) time()));
+                shuffle($hash);
+                $hash = implode('', $hash);
+
+                email(
+                    $post['email'], 
+                    Registry::get('config')->siteName.' :: Your password reset link',
+                    '<p>Your password reset link:</p>'.
+                    '<p>'.Registry::get('config')->baseHref.'/login/reset/'.$user['id'].'/'.$hash.'</p>'
+                );
+
+                $this->proxy->admin->model('LoginModel')->storeNewUserHash($user['id'], $hash);
+            } else {
+                $this->proxy->back(['Unknown email!'], 'error');
+            }
         }
     }
 
