@@ -29,15 +29,16 @@ class Login extends Controller {
         $session = $this->proxy->session();
 
         if (!empty($post['login'])) {
+            // Check and set the session user.
             if ($this->proxy->admin->model('LoginModel')->check($post) == false) {
                 $this->proxy->back(['Invalid login, or your account is suspended!'], 'error');
             }
 
-            if (in_array('super_admin', $session['staff_member']['admin_roles'])) {
+            if (in_array('super_admin', get_roles()) {
                 $this->proxy->redirect(href('admin/users/list'));
             }
 
-            if (in_array('contributor', $session['staff_member']['admin_roles'])) {
+            if (in_array('contributor' get_roles()) {
                 $this->proxy->redirect(href('admin/projects/list'));
             }
         }
@@ -46,13 +47,12 @@ class Login extends Controller {
             $user = $this->proxy->admin->model('LoginModel')->getUserByEmail($post['email']);
 
             if (!empty($user)) {
-                $hash = str_split(hash('sha512', (string) time()));
-                shuffle($hash);
-                $hash = implode('', $hash);
+                $hash = generate_hash();
 
                 email(
                     $post['email'],
                     Registry::get('config')->siteName.' | Edit your profile',
+
                     '<p>Your edit profile link:</p>'.
                     '<p>'.Registry::get('config')->baseHref.'/admin/users/edit/'.$user['id'].'/'.$hash.'</p>'
                 );

@@ -7,6 +7,7 @@ use nicotine\Model;
 
 class LoginModel extends Model {
 
+    /** Check and set the session user */
     public function check(array $data): bool
     {
         $query = $this->db->select("*")->from("cf_users")

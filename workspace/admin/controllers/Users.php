@@ -16,20 +16,26 @@ class Users extends Controller {
         $this->proxy->layout = '';
     }
 
+    // No admin roles required. Guy can enter "incognito".
     #[RequestMethod('get')]
-    #[AdminRoles('super_admin')]
     public function edit($userId, $hash = '')
     {
-        // Should be logged in.
-        if (empty($hash)) {
-            
-            // exit;
+        if (empty($hash)) { // Should be logged in.
+            $user = get_user();
 
-        // The hash should match.
-        } else {
-            
-            // set db hash = null ("expired")
-            // exit;
+            if (empty($user['id']) || $user['id'] != $userId) {
+                $this->proxy->redirect(href('admin'), ['You don\'t have permission to access this resource!'], 'error');
+            }
+        } else { // The hash should match.
+            $user = $this->proxy->admin->model('UsersModel')->getUserByIdAndHash($userId, $hash);
+
+            if (empty($user)) {
+                $this->proxy->redirect(href('admin'), ['You don\'t have permission to access this resource!'], 'error');
+            }
+
+            $this->proxy->admin->model('UsersModel')->resetUserHash($userId); // set db hash = null (aka "expired")
         }
+
+        // do something with $user
     }
 }
