@@ -10,7 +10,7 @@ class LoginModel extends Model {
     public function check(array $data): bool
     {
         $query = $this->db->select("*")->from("cf_users")
-            // Aborting "AND `invitation_hash` IS NULL", because someone can request a password reset link.
+            // Aborting "AND `login_token` IS NULL", because someone can request a password reset link.
             ->where("`is_banned` IS NULL AND `email` = :email AND `password` = :password")
             ->query()
         ;
@@ -62,7 +62,7 @@ class LoginModel extends Model {
         $this->db->update([
             'table' => 'cf_users',
             'data' => [
-                'invitation_hash' => (string) $newHash,
+                'login_token' => (string) $newHash,
             ],
             'where' => (int) $userId,
         ]);

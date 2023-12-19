@@ -6,10 +6,10 @@
 
 RoadMap:
 
-- November 2023 :: Writing the concept; Choosing the plugins; Database structure.
+- November 2023 - Writing the concept; Choosing the plugins; Database structure.
 
-- December 2023 :: Building front interface features.
+- December 2023 - Building front interface features.
 
-- January, Februay, March 2024 :: Building back structure.
+- January, Februay, March 2024 - Building back structure.
 
-- April 2024 :: Beta available. 
+- April 2024 - Beta available.

@@ -19,7 +19,7 @@ class Login extends Controller {
     #[RequestMethod('get')]
     public function index(): void
     {
-        $this->proxy->view('login/login');
+        $this->proxy->view('Login/login');
     }
     
     #[RequestMethod('post')]
@@ -30,15 +30,15 @@ class Login extends Controller {
 
         if (!empty($post['login'])) {
             if ($this->proxy->admin->model('LoginModel')->check($post) == false) {
-                $this->proxy->back(['Invalid login!'], 'error');
+                $this->proxy->back(['Invalid login, or your account is suspended!'], 'error');
             }
 
             if (in_array('super_admin', $session['staff_member']['admin_roles'])) {
-                header('Location: '.href('admin/staff/list'));
+                $this->proxy->redirect(href('admin/users/list'));
             }
 
             if (in_array('contributor', $session['staff_member']['admin_roles'])) {
-                header('Location: '.href('admin/projects/list'));
+                $this->proxy->redirect(href('admin/projects/list'));
             }
         }
 
@@ -51,15 +51,15 @@ class Login extends Controller {
                 $hash = implode('', $hash);
 
                 email(
-                    $post['email'], 
-                    Registry::get('config')->siteName.' :: Your password reset link',
-                    '<p>Your password reset link:</p>'.
-                    '<p>'.Registry::get('config')->baseHref.'/login/reset/'.$user['id'].'/'.$hash.'</p>'
+                    $post['email'],
+                    Registry::get('config')->siteName.' | Edit your profile',
+                    '<p>Your edit profile link:</p>'.
+                    '<p>'.Registry::get('config')->baseHref.'/admin/users/edit/'.$user['id'].'/'.$hash.'</p>'
                 );
 
                 $this->proxy->admin->model('LoginModel')->storeNewUserHash($user['id'], $hash);
             } else {
-                $this->proxy->back(['Unknown email!'], 'error');
+                $this->proxy->back(['Unknown email or your account is suspended!'], 'error');
             }
         }
     }
@@ -68,7 +68,7 @@ class Login extends Controller {
     public function logout()
     {
         $this->proxy->session(['staff_member'=> []]);
-        header("Location: ".href('admin'));
+        $this->proxy->redirect(href('admin'));
     }
 
 }

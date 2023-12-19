@@ -11,8 +11,8 @@ CREATE TABLE `cf_users`(
     `role_id` TINYINT UNSIGNED DEFAULT NULL COMMENT 'See cf_roles table',
     `picture_extension` VARCHAR(4) DEFAULT NULL COMMENT 'Picture is not required, is not a social network',
     `last_read_log_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'See cf_log table',
-    `invitation_hash` CHAR(128) DEFAULT NULL COMMENT 'After he reset his password becomes NULL',
-    
+    `login_token` CHAR(128) DEFAULT NULL COMMENT 'Used [not] once, but after user request becomes NULL',
+
     KEY(`role_id`),
     KEY(`last_read_log_id`)
 ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -7,7 +7,7 @@ $form = new Form();
 <fieldset>
     <legend>Login</legend>
 
-    <?php print $form->open()->method('post')->action(href('admin/login/check'))->autocomplete('off'); ?>
+    <?php print $form->open()->method('post')->action(href('admin/login/check')); ?>
         <?php print $form->csrf(); ?>
         <p>
             <?php print $form->input()->type('email')->name('email')->value(transient('email'))->required(true)->placeholder('Email'); ?>
