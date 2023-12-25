@@ -9,7 +9,8 @@ class UsersModel extends Model {
 
     public function getUserByIdAndHash($userId, $hash)
     {
-        $query = $this->db->select("*")->from("cf_users")
+        $query = $this->db->select("*")
+            ->from("cf_users")
             ->where("`is_banned` IS NULL AND `id` = ".intval($userId)." AND `login_token` = :hash")
             ->limit("1")
             ->query()
@@ -19,7 +20,7 @@ class UsersModel extends Model {
         ]);
     }
 
-    public function resetUserHash($userId)
+    public function resetUserHash($userId, $hash)
     {
         $this->db->update([
             'table' => 'cf_users',
@@ -28,5 +29,25 @@ class UsersModel extends Model {
             ],
             'where' => (int) $userId,
         ]);
+    }
+
+    public function countUsers()
+    {
+        $query = $this->db->select("COUNT(*)")
+            ->from("cf_users")
+            ->query()
+        ;
+        return $this->db->getValue($query);
+    }
+
+    public function getUsers($start, $end)
+    {
+        $query = $this->db->select("`cf_users`.*, `cf_roles`.`name` AS `role_name`")
+            ->from("cf_users")
+            ->innerJoin("cf_roles")
+            ->limit(intval($start).", ".intval($end))
+            ->query()
+        ;
+        return $this->db->getAll($query);
     }
 }

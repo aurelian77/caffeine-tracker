@@ -29,21 +29,20 @@ class Login extends Controller {
         $session = $this->proxy->session();
 
         if (!empty($post['login'])) {
-            // Check and set the session user.
+            // Check and SET the session user.
             if ($this->proxy->admin->model('LoginModel')->check($post) == false) {
                 $this->proxy->back(['Invalid login, or your account is suspended!'], 'error');
             }
 
-            if (in_array('super_admin', get_roles()) {
+            if (in_array('super_admin', get_roles())) {
                 $this->proxy->redirect(href('admin/users/list'));
             }
 
-            if (in_array('contributor' get_roles()) {
+            if (in_array('contributor', get_roles())) {
                 $this->proxy->redirect(href('admin/projects/list'));
             }
         }
-
-        if (!empty($post['forgot'])) {
+        elseif (!empty($post['forgot'])) {
             $user = $this->proxy->admin->model('LoginModel')->getUserByEmail($post['email']);
 
             if (!empty($user)) {

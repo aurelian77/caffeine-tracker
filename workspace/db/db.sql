@@ -7,11 +7,11 @@ CREATE TABLE `cf_users`(
     `is_banned` TINYINT UNSIGNED DEFAULT NULL COMMENT 'Do not delete users, just ban them',
     `username` VARCHAR(50) NOT NULL UNIQUE COMMENT 'Could be its name',
     `email` VARCHAR(100) NOT NULL UNIQUE,
-    `password` CHAR(128) DEFAULT NULL COMMENT 'SHA512',
-    `role_id` TINYINT UNSIGNED DEFAULT NULL COMMENT 'See cf_roles table',
+    `password` CHAR(128) NOT NULL COMMENT 'SHA512',
+    `role_id` TINYINT UNSIGNED DEFAULT 2 COMMENT 'See cf_roles table',
     `picture_extension` VARCHAR(4) DEFAULT NULL COMMENT 'Picture is not required, is not a social network',
     `last_read_log_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'See cf_log table',
-    `login_token` CHAR(128) DEFAULT NULL COMMENT 'Used [not] once, but after user request becomes NULL',
+    `login_token` CHAR(128) NOT NULL COMMENT 'Used [not] once, but after user request becomes NULL',
 
     KEY(`role_id`),
     KEY(`last_read_log_id`)
@@ -118,6 +118,20 @@ CREATE TABLE `cf_tasks_watchers`(
     KEY(`task_id`),
     KEY(`user_id`),
     UNIQUE KEY(`task_id`,`user_id`)
+) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------------
+
+DROP TABLE IF EXISTS `cf_projects_watchers`;
+
+CREATE TABLE `cf_projects_watchers`(
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `project_id` SMALLINT UNSIGNED NOT NULL COMMENT 'See cf_projects table',
+    `user_id` SMALLINT UNSIGNED NOT NULL COMMENT 'See cf_users table',
+    
+    KEY(`project_id`),
+    KEY(`user_id`),
+    UNIQUE KEY(`project_id`,`user_id`)
 ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------------
