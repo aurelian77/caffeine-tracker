@@ -33,10 +33,12 @@ class Users extends Controller {
         $this->proxy->view('Users/list', compact('title', 'users', 'pagination'));
     }
 
-    // No admin roles required. Guy can enter "incognito".
+    // No admin roles required. Guy can enter "incognito", but needs a valid hash - which is immediatly changed.
     #[RequestMethod('get')]
     public function edit($userId, $hash = '')
     {
+        $title = 'Edit User';
+
         if (empty($hash)) { // Should be logged in.
             $user = get_user();
 
@@ -50,9 +52,9 @@ class Users extends Controller {
                 $this->proxy->redirect(href('admin'), ['You don\'t have permission to access this resource!'], 'error');
             }
 
-            $this->proxy->admin->model('UsersModel')->resetUserHash($userId, generate_hash());
+            $this->proxy->admin->model('LoginModel')->storeNewUserHash($userId, generate_hash()); // change the hash
         }
 
-        // do something with $user
+        $this->proxy->view('Users/edit', compact('title', 'user'));
     }
 }

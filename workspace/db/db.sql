@@ -11,11 +11,25 @@ CREATE TABLE `cf_users`(
     `role_id` TINYINT UNSIGNED DEFAULT 2 COMMENT 'See cf_roles table',
     `picture_extension` VARCHAR(4) DEFAULT NULL COMMENT 'Picture is not required, is not a social network',
     `last_read_log_id` BIGINT UNSIGNED DEFAULT NULL COMMENT 'See cf_log table',
-    `login_token` CHAR(128) NOT NULL COMMENT 'Used [not] once, but after user request becomes NULL',
+    `login_token` CHAR(128) NOT NULL COMMENT 'Used [not] once, but after user request is changed',
 
     KEY(`role_id`),
     KEY(`last_read_log_id`)
 ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- this user should be deleted immediatly
+INSERT INTO `cf_users` SET
+    `username` = 'Administrator',
+    `email` = 'admin@example.com',
+
+    -- "123456"
+    `password` = 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413',
+
+    `role_id` = 1,
+
+    -- fake, should be changed, also
+    `login_token` = 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413'
+;
 
 -- -----------------------------------------------------------
 

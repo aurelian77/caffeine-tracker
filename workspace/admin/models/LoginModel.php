@@ -7,7 +7,7 @@ use nicotine\Model;
 
 class LoginModel extends Model {
 
-    /** Check and set the session user */
+    /** Check and SET the session user */
     public function check(array $data): bool
     {
         $query = $this->db->select("*")->from("cf_users")
@@ -50,7 +50,6 @@ class LoginModel extends Model {
     {
         $query = $this->db->select("*")->from("cf_users")
             ->where("`is_banned` IS NULL AND `email` = :email")
-            ->limit("1")
             ->query()
         ;
         return $this->db->getRow($query, [

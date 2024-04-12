@@ -19,8 +19,8 @@ a {
 }
 header {
     overflow: hidden;
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #ddd;
+    background-color: #ddf;
+    border-bottom: 1px solid #ccc;
 }
 ul#menu-left {
     list-style-type: none;
@@ -31,11 +31,9 @@ ul#menu-left > li {
 }
 ul#menu-left > li > a {
     display: inline-block;
-    padding: 6px 12px;
-}
-ul#menu-left > li > a:hover {
-    background-color: #4169e1;
-    color: #fff;
+    padding: 8px;
+    color: #222;
+    margin-right: 4px;
 }
 ul#menu-right {
     list-style-type: none;
@@ -46,9 +44,16 @@ ul#menu-right > li {
 }
 ul#menu-right > li > img {
     position: relative;
-    top: 6px;
-    padding: 0 8px;
+    top: 8px;
+    padding: 0 10px;
     cursor: pointer;
+    margin-right: 4px;
+}
+ul#menu-left > li > a:first-of-type {
+    
+}
+ul#menu-right > li > img:last-of-type {
+    
 }
 header .badge {
     font-size: 12px;
@@ -129,9 +134,30 @@ main {
     background-color: #fafafa;
     padding: 2px;
 }
+.table tr:nth-child(2n) td {
+    background-color: #f0f0f0;
+}
+.table tr:nth-child(2n+1) td {
+    background-color: #fff;
+}
 main h1 {
     font-size: 22px;
     font-weight: normal;
     margin: 4px 0 8px;
     color: #00bfff;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
+    font-size: 16px;
+    font-family: monospace;
+    padding: 2px;
+    width: 300px;
+}
+select,
+input[type="radio"],
+input[type="checkbox"],
+button {
+    cursor: pointer;
 }

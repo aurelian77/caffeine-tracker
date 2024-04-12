@@ -12,22 +12,10 @@ class UsersModel extends Model {
         $query = $this->db->select("*")
             ->from("cf_users")
             ->where("`is_banned` IS NULL AND `id` = ".intval($userId)." AND `login_token` = :hash")
-            ->limit("1")
             ->query()
         ;
         return $this->db->getRow($query, [
             ':hash' => $hash,
-        ]);
-    }
-
-    public function resetUserHash($userId, $hash)
-    {
-        $this->db->update([
-            'table' => 'cf_users',
-            'data' => [
-                'login_token' => null,
-            ],
-            'where' => (int) $userId,
         ]);
     }
 

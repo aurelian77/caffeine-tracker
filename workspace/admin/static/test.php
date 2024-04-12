@@ -53,6 +53,7 @@ function ActivateEditor(formId, textareaId) {
             ['preview', 'print'],
             ['save']
         ],
+        // Should be aborted, since we use only monospace
         font: [
             "Arial",
             "Comic Sans MS",
